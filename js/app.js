@@ -113,22 +113,6 @@
       scrollTrigger: { trigger: '.detalles-cards', start: 'top 80%' },
     });
 
-    /* Razon items */
-    $$('.razon-photo').forEach(el => {
-      gsap.from(el, {
-        x: el.closest('.razon-item.reverse') ? 40 : -40,
-        opacity: 0, duration: .9, ease: 'power2.out',
-        scrollTrigger: { trigger: el.closest('.razon-item'), start: 'top 75%' },
-      });
-    });
-    $$('.razon-text').forEach(el => {
-      gsap.from(el, {
-        x: el.closest('.razon-item.reverse') ? -40 : 40,
-        opacity: 0, duration: .9, ease: 'power2.out',
-        scrollTrigger: { trigger: el.closest('.razon-item'), start: 'top 75%' },
-      });
-    });
-
     /* Closing confetti and hearts */
     ScrollTrigger.create({
       trigger: '#cierre-section',
