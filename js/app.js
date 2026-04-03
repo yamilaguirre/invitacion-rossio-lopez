@@ -13,6 +13,8 @@
       document.body.style.overflow = '';
       initSparkles();
       startHeroEntrance();
+      // Attempt to play music right as the page reveals itself
+      tryPlayMusic();
     }, 2600);
   });
 
@@ -158,16 +160,26 @@
     })();
   }
 
-  /* ═══════════ MUSIC AUTO-INVITE ═══════════ */
-  // Try to play music when user first scrolls (better browser compatibility)
-  let musicAttempted = false;
-  window.addEventListener('scroll', () => {
-    if (musicAttempted) return;
-    musicAttempted = true;
+  /* ═══════════ MUSIC AUTO-START ═══════════ */
+  // Shared play function
+  function tryPlayMusic() {
+    if (!bgMusic.paused) return;
     bgMusic.play().then(() => {
       audioBtn.classList.add('playing');
       audioBtn.querySelector('.audio-label').textContent = 'Pausar';
-    }).catch(() => {});
-  }, { once: true, passive: true });
+    }).catch(() => {
+      // Browser blocked autoplay — wait for first user gesture
+      ['touchstart', 'click', 'keydown'].forEach(evt => {
+        document.addEventListener(evt, () => {
+          if (bgMusic.paused) {
+            bgMusic.play().then(() => {
+              audioBtn.classList.add('playing');
+              audioBtn.querySelector('.audio-label').textContent = 'Pausar';
+            }).catch(() => {});
+          }
+        }, { once: true, passive: true });
+      });
+    });
+  }
 
 })();
